@@ -1,11 +1,12 @@
-/* Nova — Full Integrated v1.2.0 */
-const PAYHIP_URL = "https://payhip.com/"; // <-- paste your product URL
-const PLAUSIBLE_DOMAIN = "";              // e.g., "gonovanow.com"
+/* Nova — Full Integrated v1.2.1 */
+const PAYHIP_URL = "https://payhip.com/";      // <-- paste your product URL
+const NAVI_URL   = "https://example.com/navi"; // <-- paste your Navi URL
+const PLAUSIBLE_DOMAIN = "";                   // e.g., "gonovaway.com"
 const ENABLE_INTERNAL_ANALYTICS = true;
+const AUTO_SPEAK_ON_START = true;
 
-const state = { selected: new Set(), started:false, startTs: null };
+const state = { selected:new Set() };
 
-// 50 traits (no white backgrounds)
 const TRAITS = [
  "Creative","Analytical","Empathic","Detail-oriented","Strategic",
  "Hands-on","Curious","Resilient","Collaborative","Independent",
@@ -19,31 +20,30 @@ const TRAITS = [
  "Optimistic","Realistic","Thorough","Bold","Humble"
 ];
 
-// Archetype definitions: weights map traits → archetypes
 const ARCHETYPES = {
-  "Creator":      ["Creative","Innovative","Visionary","Storyteller","Design thinker"],
-  "Analyst":      ["Analytical","Data-driven","Numerate","Researcher","Detail-oriented"],
-  "Healer":       ["Empathic","Patient","Listener","Service-minded","Calm under pressure"],
-  "Builder":      ["Hands-on","Executor","Thorough","Quality-focused","Process-improver"],
-  "Leader":       ["Leadership","Persuasive","Organizer","Owner-mindset","Strategic"],
-  "Connector":    ["Communicator","Networker","Collaborative","Customer-centric","Persuasive"],
-  "Guardian":     ["Safety-minded","Integrity-first","Realistic","Planner","Time-disciplined"],
-  "Explorer":     ["Curious","Adaptable","Bold","Growth-oriented","Independent"],
-  "Teacher":      ["Teacher","Mentor","Listener","Planner","Communicator"],
-  "Architect":    ["Systems thinker","Strategic","Planner","Technically savvy","Problem-solver"]
+  "Creator":["Creative","Innovative","Visionary","Storyteller","Design thinker"],
+  "Analyst":["Analytical","Data-driven","Numerate","Researcher","Detail-oriented"],
+  "Healer":["Empathic","Patient","Listener","Service-minded","Calm under pressure"],
+  "Builder":["Hands-on","Executor","Thorough","Quality-focused","Process-improver"],
+  "Leader":["Leadership","Persuasive","Organizer","Owner-mindset","Strategic"],
+  "Connector":["Communicator","Networker","Collaborative","Customer-centric","Persuasive"],
+  "Guardian":["Safety-minded","Integrity-first","Realistic","Planner","Time-disciplined"],
+  "Explorer":["Curious","Adaptable","Bold","Growth-oriented","Independent"],
+  "Teacher":["Teacher","Mentor","Listener","Planner","Communicator"],
+  "Architect":["Systems thinker","Strategic","Planner","Technically savvy","Problem-solver"]
 };
 
 const ARCHETYPE_ROLES = {
-  "Creator": ["Content creator","Designer","Brand storyteller","Product concept lead"],
-  "Analyst": ["Business analyst","Data analyst","Financial analyst","QA & metrics"],
-  "Healer": ["Counselor/coach","HR partner","Community support","Healthcare aide"],
-  "Builder": ["Operations specialist","Implementation tech","Manufacturing/field ops","QA lead"],
-  "Leader": ["Team lead","Project/program manager","Entrepreneur","Sales lead"],
-  "Connector": ["Account manager","Partnerships","Community/outreach","Customer success"],
-  "Guardian": ["Safety/Compliance officer","Risk analyst","Scheduler","Admin lead"],
-  "Explorer": ["R&D scout","Growth/BD","Field researcher","Startup generalist"],
-  "Teacher": ["Trainer","Workshop leader","Curriculum designer","Enablement"],
-  "Architect": ["System designer","Process architect","Solutions engineer","Product ops"]
+  "Creator":["Content creator","Designer","Brand storyteller","Product concept lead"],
+  "Analyst":["Business analyst","Data analyst","Financial analyst","QA & metrics"],
+  "Healer":["Counselor/coach","HR partner","Community support","Healthcare aide"],
+  "Builder":["Operations specialist","Implementation tech","Manufacturing/field ops","QA lead"],
+  "Leader":["Team lead","Project/program manager","Entrepreneur","Sales lead"],
+  "Connector":["Account manager","Partnerships","Community/outreach","Customer success"],
+  "Guardian":["Safety/Compliance officer","Risk analyst","Scheduler","Admin lead"],
+  "Explorer":["R&D scout","Growth/BD","Field researcher","Startup generalist"],
+  "Teacher":["Trainer","Workshop leader","Curriculum designer","Enablement"],
+  "Architect":["System designer","Process architect","Solutions engineer","Product ops"]
 };
 
 function track(name, data={}){
@@ -59,6 +59,7 @@ function track(name, data={}){
 }
 
 function el(id){return document.getElementById(id);}
+
 function renderTraits(filter=""){
   const grid = el("traitGrid"); grid.innerHTML = "";
   const q = filter.trim().toLowerCase();
@@ -87,25 +88,23 @@ function speakIntro(){
   track("voice_intro_played");
 }
 
-function begin(){ el("welcome").style.display="none"; el("traits").style.display="block"; track("flow_traits_enter"); }
+function begin(){
+  el("welcome").style.display="none";
+  el("traits").style.display="block";
+  renderTraits();
+  track("flow_traits_enter");
+  if(AUTO_SPEAK_ON_START) speakIntro();
+}
+
 function computeScore(){
   const n = state.selected.size;
   return Math.min(100, Math.max(0, Math.round(100 * (1/(1+Math.exp(-(n-12)/5))))));
 }
 
 function characterize(){
-  // Score each archetype by count of overlapping traits
-  const counts = {};
-  for(const a in ARCHETYPES){ counts[a] = 0; }
-  state.selected.forEach(t => {
-    for(const [a, list] of Object.entries(ARCHETYPES)){
-      if(list.includes(t)) counts[a] += 1;
-    }
-  });
-  // Sort and pick top 3
-  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  const top = sorted.slice(0,3);
-  return top;
+  const counts = {}; for(const a in ARCHETYPES){ counts[a] = 0; }
+  state.selected.forEach(t => { for(const [a, list] of Object.entries(ARCHETYPES)){ if(list.includes(t)) counts[a]++; } });
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,3);
 }
 
 function renderReport(){
@@ -118,31 +117,27 @@ function renderReport(){
     : "Select some traits and regenerate to see your purpose mix.";
   const arch = characterize();
   const archList = el("archetypes"); archList.innerHTML = "";
-  arch.forEach(([name,val],i)=>{
+  arch.forEach(([name,val])=>{
     const li = document.createElement("li");
     li.innerHTML = `<strong>${name}</strong> — signal strength ${val}`;
     archList.appendChild(li);
   });
   const rolesList = el("roles"); rolesList.innerHTML = "";
-  arch.forEach(([name])=>{
-    (ARCHETYPE_ROLES[name]||[]).forEach(r=>{
-      const li = document.createElement("li"); li.textContent = `${name}: ${r}`; rolesList.appendChild(li);
-    });
-  });
+  arch.forEach(([name])=> (ARCHETYPE_ROLES[name]||[]).forEach(r=>{
+    const li = document.createElement("li"); li.textContent = `${name}: ${r}`; rolesList.appendChild(li);
+  }));
   track("flow_report_view",{score, count: sel.length, arch: arch.map(a=>a[0])});
 }
 
 function exportTxt(){
+  const arch = characterize();
   const lines = [];
   lines.push("Nova — Personal Snapshot");
   lines.push("========================");
   lines.push(`Selected traits (${state.selected.size}): ${Array.from(state.selected).join(", ")}`);
-  const arch = characterize();
-  lines.push("");
-  lines.push("Top archetypes:");
+  lines.push(""); lines.push("Top archetypes:");
   arch.forEach(([n,v],i)=>lines.push(`${i+1}. ${n} — ${v}`));
-  lines.push("");
-  lines.push("Suggested roles:");
+  lines.push(""); lines.push("Suggested roles:");
   arch.forEach(([n])=> (ARCHETYPE_ROLES[n]||[]).forEach(r=>lines.push(`- ${n}: ${r}`)));
   const blob = new Blob([lines.join("\n")], {type:"text/plain"});
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download="Nova_Snapshot.txt"; a.click();
@@ -179,23 +174,38 @@ function setupRecorder(){
       track("rec_start");
     }catch(e){ alert("Microphone access denied."); }
   };
-  stopBtn.onclick = ()=>{ rec && rec.stop(); recBtn.disabled = false; stopBtn.disabled = true; track("rec_stop"); };
+  stopBtn.onclick = ()=>{ try{ rec && rec.stop(); media && media.getTracks().forEach(t=>t.stop()); }catch(e){} recBtn.disabled = false; stopBtn.disabled = true; track("rec_stop"); };
+}
+
+function restart(){
+  state.selected.clear();
+  el("report").style.display="none";
+  el("welcome").style.display="block";
+  track("restart");
 }
 
 function init(){
-  el("year").textContent = new Date().getFullYear();
-  renderTraits(); setupRecorder();
+  const y = document.createElement('span'); y.id='year'; y.textContent = new Date().getFullYear(); document.querySelector('footer span')?.replaceWith(y);
+  document.title = "Nova — Grand Rising";
+  // Welcome handlers
   el("beginBtn").onclick = begin;
   el("speakBtn").onclick = speakIntro;
-  el("payhipBtn").onclick = ()=>{ window.open(PAYHIP_URL, "_blank"); track("payhip_open"); };
+  el("payhipBtn").onclick = ()=>{ window.open(PAYHIP_URL, "_blank"); track("payhip_open_welcome"); };
+  // Traits handlers
   el("toReportBtn").onclick = renderReport;
   el("clearBtn").onclick = ()=>{ state.selected.clear(); renderTraits(el("search").value); };
   el("search").oninput = (e)=>renderTraits(e.target.value);
+  // Report handlers
   el("printBtn").onclick = ()=>{ window.print(); track("download_pdf"); };
   el("exportTxtBtn").onclick = exportTxt;
   el("saveEmailBtn").onclick = saveEmail;
+  el("payhipCta").onclick = ()=>{ window.open(PAYHIP_URL, "_blank"); track("payhip_open_report"); };
+  el("naviCta").onclick = ()=>{ window.open(NAVI_URL, "_blank"); track("navi_open"); };
+  el("restartBtn").onclick = restart;
 
-  // Optional Plausible injection
+  renderTraits();
+  setupRecorder();
+
   if(PLAUSIBLE_DOMAIN){
     const s = document.createElement("script");
     s.defer = true; s.setAttribute("data-domain", PLAUSIBLE_DOMAIN);

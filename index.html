@@ -1,28 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nova — Grand Rising</title>
-  <meta name="description" content="Discover your purpose and align your path with Nova + Navi.">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova — Grand Rising</title><meta name="description" content="Discover your purpose and align your path with Nova + Navi.">
+<link rel="stylesheet" href="styles.css"></head><body>
 <div class="container">
-  <div class="card">
-    <div class="row" style="justify-content:space-between;align-items:flex-start">
-      <div>
-        <div class="small">NOVA + NAVI</div>
-        <h1>Discover your purpose and fulfill your destiny.</h1>
-        <p>Designed for ages <strong>13+</strong>. Private, simple, and powerful.</p>
-      </div>
-      <div class="badge no-print"><span class="dot"></span> v1.2.0</div>
-    </div>
-  </div>
+  <div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start">
+    <div><div class="small">NOVA + NAVI</div><h1>Discover your purpose and fulfill your destiny.</h1>
+    <p>Designed for ages <strong>13+</strong>. Private, simple, and powerful.</p></div>
+    <div class="badge no-print"><span class="dot"></span> v1.2.1</div>
+  </div></div>
 
   <section class="card" id="welcome">
     <h2>Welcome</h2>
     <p>Grand rising! I’m Nova. I’ll ask you about what energizes you. Then I’ll craft a clear snapshot with guidance and roles that fit your mix.</p>
+    <div class="ai-note"><strong>✨ Powered by Clara, Nova’s AI Engine</strong><br>
+      As soon as you choose your traits, Clara instantly processes them to create your personalized purpose snapshot. The speed is real — that’s the precision of AI working for you.
+    </div>
     <div class="row controls">
       <button id="beginBtn">Begin</button>
       <button class="secondary" id="speakBtn" title="Play voice intro">🔊 Voice Intro</button>
@@ -45,17 +37,13 @@
 
   <section class="card" id="report" style="display:none">
     <h2>Your Nova Snapshot</h2>
+    <p class="small"><em>Generated instantly by Clara, Nova’s AI engine.</em></p>
     <p id="summary"></p>
     <div class="scorebar" aria-label="alignment score"><div id="scoreFill" style="width:0%"></div></div>
     <p class="small">Alignment score blends your selected strengths and interests.</p>
 
-    <div class="divider"></div>
-    <h3>Top Archetypes</h3>
-    <ol id="archetypes"></ol>
-
-    <div class="divider"></div>
-    <h3>Suggested Roles & Paths</h3>
-    <ul id="roles"></ul>
+    <div class="divider"></div><h3>Top Archetypes</h3><ol id="archetypes"></ol>
+    <div class="divider"></div><h3>Suggested Roles & Paths</h3><ul id="roles"></ul>
 
     <div class="row controls no-print">
       <button id="printBtn">Download PDF</button>
@@ -64,24 +52,30 @@
 
     <div class="divider"></div>
     <h3>Stay in the loop</h3>
-    <div class="row">
-      <input type="email" id="emailInput" placeholder="Enter your email">
-      <button id="saveEmailBtn">Save</button>
-    </div>
+    <div class="row"><input type="email" id="emailInput" placeholder="Enter your email">
+      <button id="saveEmailBtn">Save</button></div>
     <p class="small">Stored locally on this device for demo purposes.</p>
 
     <div class="divider"></div>
     <h3>Leave a quick voice note</h3>
-    <div class="row no-print">
-      <button id="recBtn">Start Recording</button>
+    <div class="row no-print"><button id="recBtn">Start Recording</button>
       <button class="secondary" id="stopRecBtn" disabled>Stop</button>
-      <a id="downloadRec" class="badge" style="display:none">Download note</a>
-    </div>
+      <a id="downloadRec" class="badge" style="display:none">Download note</a></div>
     <audio id="playback" controls style="display:none"></audio>
+
+    <div class="divider"></div>
+    <section id="closing">
+      <h2>🎉 Thank You for Exploring with Nova!</h2>
+      <p>We’re honored to be part of your purpose journey. Choose your next step below.</p>
+      <div class="cta no-print">
+        <button id="payhipCta">Buy Purpose Guide on Payhip</button>
+        <button class="blue" id="naviCta">Discover NAVI Career Help</button>
+        <button class="secondary" id="restartBtn">Start Over</button>
+      </div>
+    </section>
   </section>
 
   <footer class="small">© <span id="year"></span> Nova + Navi. Built with love and clarity.</footer>
 </div>
 <script src="script.js"></script>
-</body>
-</html>
+</body></html>
