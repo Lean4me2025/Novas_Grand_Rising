@@ -1,72 +1,87 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nova — Novas Grand Rising</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nova — Grand Rising</title>
+  <meta name="description" content="Discover your purpose and align your path with Nova + Navi.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main id="app">
-    <!-- Welcome / Intro -->
-    <section id="welcome" class="screen active">
-      <div class="center">
-        <h1>Welcome to <span class="brand">Nova</span></h1>
-        <p class="subtitle">Discover your purpose and fulfill your destiny.</p>
-        <div class="card">
-          <p class="voice-line">“Hi, I’m Nova. I’m here to help you discover your unique traits and align them with your purpose.”</p>
-          <button id="playVoice" class="btn">▶︎ Play Greeting</button>
-        </div>
-        <button id="beginBtn" class="btn primary">Begin</button>
+<div class="container">
+  <div class="card">
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="small">NOVA + NAVI</div>
+        <h1>Discover your purpose and fulfill your destiny.</h1>
+        <p>Designed for ages <strong>13+</strong>. Private, simple, and powerful.</p>
       </div>
-    </section>
+      <div class="badge no-print"><span class="dot"></span> v1.2.0</div>
+    </div>
+  </div>
 
-    <!-- Trait Selection -->
-    <section id="traits" class="screen">
-      <header class="bar">
-        <h2>Select Your Traits</h2>
-        <button id="toWelcome" class="btn ghost">Back</button>
-      </header>
-      <div id="traitsGrid" class="grid"></div>
-      <footer class="bar">
-        <p id="count">0 selected</p>
-        <button id="toResults" class="btn primary">See My Results</button>
-      </footer>
-    </section>
+  <section class="card" id="welcome">
+    <h2>Welcome</h2>
+    <p>Grand rising! I’m Nova. I’ll ask you about what energizes you. Then I’ll craft a clear snapshot with guidance and roles that fit your mix.</p>
+    <div class="row controls">
+      <button id="beginBtn">Begin</button>
+      <button class="secondary" id="speakBtn" title="Play voice intro">🔊 Voice Intro</button>
+      <button class="ghost" id="payhipBtn">Open Guide on Payhip</button>
+    </div>
+    <p class="small">Audio uses your browser’s speech synthesis — no files are uploaded.</p>
+  </section>
 
-    <!-- Results -->
-    <section id="results" class="screen">
-      <header class="bar">
-        <h2>Your Nova Report</h2>
-        <button id="toTraits" class="btn ghost">Back</button>
-      </header>
+  <section class="card" id="traits" style="display:none">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h2>Select the traits that sound like you</h2>
+      <input type="text" id="search" placeholder="Search traits… (e.g., creative, detail)" aria-label="Search traits">
+    </div>
+    <div class="grid" id="traitGrid"></div>
+    <div class="row controls no-print">
+      <button id="toReportBtn">See My Report</button>
+      <button class="secondary" id="clearBtn">Clear</button>
+    </div>
+  </section>
 
-      <div class="report">
-        <div id="summary"></div>
+  <section class="card" id="report" style="display:none">
+    <h2>Your Nova Snapshot</h2>
+    <p id="summary"></p>
+    <div class="scorebar" aria-label="alignment score"><div id="scoreFill" style="width:0%"></div></div>
+    <p class="small">Alignment score blends your selected strengths and interests.</p>
 
-        <div class="actions">
-          <button id="downloadPdf" class="btn">Download PDF</button>
-          <button id="downloadTxt" class="btn">Export .txt</button>
-        </div>
+    <div class="divider"></div>
+    <h3>Top Archetypes</h3>
+    <ol id="archetypes"></ol>
 
-        <div class="email-capture">
-          <label>
-            Email my report:
-            <input type="email" id="emailInput" placeholder="you@example.com" />
-          </label>
-          <button id="saveEmail" class="btn">Send</button>
-          <small class="note">Demo only (saved locally). For production, connect to your email service.</small>
-        </div>
+    <div class="divider"></div>
+    <h3>Suggested Roles & Paths</h3>
+    <ul id="roles"></ul>
 
-        <div class="continue">
-          <h3>Continue Your Journey</h3>
-          <p>Get the Purpose Workbook and companion content.</p>
-          <a id="payhipLink" class="btn primary" target="_blank" rel="noopener">Open Payhip</a>
-        </div>
-      </div>
-    </section>
-  </main>
+    <div class="row controls no-print">
+      <button id="printBtn">Download PDF</button>
+      <button class="secondary" id="exportTxtBtn">Export .txt</button>
+    </div>
 
-  <script src="script.js"></script>
+    <div class="divider"></div>
+    <h3>Stay in the loop</h3>
+    <div class="row">
+      <input type="email" id="emailInput" placeholder="Enter your email">
+      <button id="saveEmailBtn">Save</button>
+    </div>
+    <p class="small">Stored locally on this device for demo purposes.</p>
+
+    <div class="divider"></div>
+    <h3>Leave a quick voice note</h3>
+    <div class="row no-print">
+      <button id="recBtn">Start Recording</button>
+      <button class="secondary" id="stopRecBtn" disabled>Stop</button>
+      <a id="downloadRec" class="badge" style="display:none">Download note</a>
+    </div>
+    <audio id="playback" controls style="display:none"></audio>
+  </section>
+
+  <footer class="small">© <span id="year"></span> Nova + Navi. Built with love and clarity.</footer>
+</div>
+<script src="script.js"></script>
 </body>
 </html>

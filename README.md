@@ -1,26 +1,20 @@
-# Novas Grand Rising — Nova (Full Dev + Production)
+# Nova — Grand Rising (Full Integrated Upload) v1.2.0
 
-This is a **static** front-end build designed for deployment on Vercel (no build step).
+> **This is the integrated, single-upload build.** Replace *every* file in your GitHub repo with the contents of this ZIP.
 
-## Features
-- Welcome screen with **voice intro** (Web Speech synthesis; no external audio files required)
-- Manual **Begin** button to ensure stable load
-- **50-trait** selection grid with smooth interactions
-- **Report** screen with personalized insights
-- **Download PDF** (opens print dialog so users can save as PDF) and **Export .txt** as fallback
-- **Email capture** (client-side only demonstration; saves to `localStorage`)
-- **Payhip** link placeholder (set your product link in `script.js`)
-- Fully static — just drag-drop to GitHub and deploy with Vercel
-
-## Local Development
-Open `index.html` in a browser. No server required.
+## Included Features
+- Welcome screen with **voice intro** (Web Speech).
+- **50‑trait** grid with search & smooth toggling.
+- **Archetype engine** that converts traits → top 3 purpose archetypes + guidance.
+- **Role suggestions** (jobs / callings) based on your archetype mix.
+- **Report view** with alignment score bar.
+- **Download PDF** (print dialog) + **Export .txt** backup.
+- **Email capture** (client-side to `localStorage`).
+- **Voice note recorder** (MediaRecorder) + download WAV/WebM.
+- **Payhip** button (set `PAYHIP_URL` in `script.js`).
+- **Internal analytics** (toggle with `ENABLE_INTERNAL_ANALYTICS`) and optional Plausible (`PLAUSIBLE_DOMAIN`).
 
 ## Deploy on Vercel
-- Framework: **Other**
-- Build Command: *(leave empty)*
-- Output directory: *(root)*
+Framework: **Other** · Build Command: *(empty)* · Output Directory: *(empty)*
 
-## Customize
-- Update trait list and descriptions in `script.js` (TRAITS array).
-- Set `PAYHIP_URL` in `script.js`.
-- Tweak colors/fonts in `styles.css`.
+**Build:** 2025-08-15T18:49:14.346781Z
