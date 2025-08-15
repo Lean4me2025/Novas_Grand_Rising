@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nova — Novas Grand Rising</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+    <!-- Welcome / Intro -->
+    <section id="welcome" class="screen active">
+      <div class="center">
+        <h1>Welcome to <span class="brand">Nova</span></h1>
+        <p class="subtitle">Discover your purpose and fulfill your destiny.</p>
+        <div class="card">
+          <p class="voice-line">“Hi, I’m Nova. I’m here to help you discover your unique traits and align them with your purpose.”</p>
+          <button id="playVoice" class="btn">▶︎ Play Greeting</button>
+        </div>
+        <button id="beginBtn" class="btn primary">Begin</button>
+      </div>
+    </section>
+
+    <!-- Trait Selection -->
+    <section id="traits" class="screen">
+      <header class="bar">
+        <h2>Select Your Traits</h2>
+        <button id="toWelcome" class="btn ghost">Back</button>
+      </header>
+      <div id="traitsGrid" class="grid"></div>
+      <footer class="bar">
+        <p id="count">0 selected</p>
+        <button id="toResults" class="btn primary">See My Results</button>
+      </footer>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="screen">
+      <header class="bar">
+        <h2>Your Nova Report</h2>
+        <button id="toTraits" class="btn ghost">Back</button>
+      </header>
+
+      <div class="report">
+        <div id="summary"></div>
+
+        <div class="actions">
+          <button id="downloadPdf" class="btn">Download PDF</button>
+          <button id="downloadTxt" class="btn">Export .txt</button>
+        </div>
+
+        <div class="email-capture">
+          <label>
+            Email my report:
+            <input type="email" id="emailInput" placeholder="you@example.com" />
+          </label>
+          <button id="saveEmail" class="btn">Send</button>
+          <small class="note">Demo only (saved locally). For production, connect to your email service.</small>
+        </div>
+
+        <div class="continue">
+          <h3>Continue Your Journey</h3>
+          <p>Get the Purpose Workbook and companion content.</p>
+          <a id="payhipLink" class="btn primary" target="_blank" rel="noopener">Open Payhip</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
