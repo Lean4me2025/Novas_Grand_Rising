@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NOVA + NAVI</title>
   <link rel="stylesheet" href="styles.css" />
-  <script defer src="script.js"></script>
+  <style>
+    .btn {
+      display:inline-block; padding:10px 16px; border:0; border-radius:6px; cursor:pointer; font-size:16px;
+    }
+    .btn + .btn { margin-left: 10px; }
+  </style>
 </head>
 <body>
   <main>
@@ -19,21 +24,65 @@
     <p><strong>Powered by Clara, Nova’s AI Engine</strong><br>
     As soon as you choose your traits, Clara instantly processes them to create your personalized path.</p>
 
-    <button id="voiceIntro">Begin ▸ Voice Intro</button>
-    <p><a href="https://payhip.com" target="_blank">Open Guide on Payhip</a></p>
+    <p>
+      <button id="voiceIntro" class="btn">Begin ▸ Voice Intro</button>
+      <button id="continueBtn" class="btn">Continue → Selections</button>
+      &nbsp;|&nbsp;
+      <a href="https://payhip.com" target="_blank" rel="noopener">Open Guide on Payhip</a>
+    </p>
 
     <p><em>Audio uses your browser’s speech synthesis — no files are uploaded.</em></p>
   </main>
 
   <script>
+    // Voice intro
     document.getElementById("voiceIntro").addEventListener("click", function() {
-      const msg = new SpeechSynthesisUtterance(
-        "Grand rising! I’m Nova. I’ll guide you through discovering your purpose."
-      );
-      window.speechSynthesis.speak(msg);
+      try {
+        const msg = new SpeechSynthesisUtterance(
+          "Grand rising! I’m Nova. I’ll guide you through discovering your purpose. When you're ready, press Continue to go to selections."
+        );
+        const synth = window.speechSynthesis;
+        if (!synth) return;
+        synth.cancel();
+        // Try to choose an English voice
+        const voices = synth.getVoices();
+        const preferred = voices.find(v => /female/i.test(v.name) && /en/i.test(v.lang)) ||
+                          voices.find(v => /en-US|en-GB/i.test(v.lang));
+        if (preferred) msg.voice = preferred;
+        msg.rate = 1.02;
+        synth.speak(msg);
+      } catch (e) {}
+    });
+
+    // Continue button tries several common entry points used by your script.js
+    function tryStartSelections() {
+      // If your script.js exposes any of these, call them:
+      if (typeof window.startSelections === "function") { window.startSelections(); return true; }
+      if (typeof window.startFlow === "function") { window.startFlow("traits"); return true; }
+      if (typeof window.beginNova === "function") { window.beginNova(); return true; }
+      if (typeof window.initNova === "function") { window.initNova(); return true; }
+      if (typeof window.loadTraits === "function") { window.loadTraits(); return true; }
+
+      // Otherwise, reveal a traits section if it already exists in the DOM
+      const el = document.querySelector("#traits, .traits, [data-step='traits']");
+      if (el) { el.style.display = "block"; el.removeAttribute("hidden"); el.scrollIntoView({behavior:"smooth"}); return true; }
+
+      // As a last resort, emit an event your script.js can listen for
+      try { document.dispatchEvent(new CustomEvent("nova:begin")); return true; } catch(e) {}
+
+      return false;
+    }
+
+    document.getElementById("continueBtn").addEventListener("click", function(){
+      const ok = tryStartSelections();
+      if (!ok) {
+        alert("Starting selections… If nothing appears, your script.js needs a small hook. I can wire it in next.");
+      }
     });
   </script>
 
+  <!-- Your app logic -->
+  <script src="script.js"></script>
   <!-- Vercel Analytics -->
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
