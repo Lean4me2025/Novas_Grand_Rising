@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nova + Navi</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOVA + NAVI</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <h1>NOVA + NAVI</h1>
-  <p>Discover your purpose and fulfill your destiny.<br>
-  Designed for ages 13+. Private, simple, and powerful.</p>
+  <main>
+    <h1>NOVA + NAVI</h1>
+    <p>Discover your purpose and fulfill your destiny.<br>
+    Designed for ages 13+. Private, simple, and powerful.</p>
 
-  <h2>v1.2.1 Welcome</h2>
-  <p>Grand rising! I’m Nova. I’ll ask you about what energizes you. Then I’ll craft a clear snapshot with guidance and roles that fit your mix.</p>
+    <h2>v1.2.1 Welcome</h2>
+    <p>Grand rising! I'm Nova. I'll ask you about what energizes you. Then I’ll craft your path.</p>
 
-  <p><strong>Powered by Clara, Nova’s AI Engine</strong><br>
-  As soon as you choose your traits, Clara instantly processes them to create your personalized purpose snapshot. The speed is real — that’s the precision of AI working for you.</p>
+    <p><strong>Powered by Clara, Nova’s AI Engine</strong><br>
+    As soon as you choose your traits, Clara instantly processes them to create your personalized path.</p>
 
-  <p>Begin ▶ Voice Intro | Open Guide on <a href="https://payhip.com">Payhip</a></p>
-  <p>Audio uses your browser’s speech synthesis — no files are uploaded.</p>
+    <button id="voiceIntro">Begin ▸ Voice Intro</button>
+    <p><a href="https://payhip.com" target="_blank">Open Guide on Payhip</a></p>
 
-  <footer>
-    <p>© Nova + Navi. Built with love and clarity.</p>
-  </footer>
+    <p><em>Audio uses your browser’s speech synthesis — no files are uploaded.</em></p>
+  </main>
 
-  <!-- JavaScript -->
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("voiceIntro").addEventListener("click", function() {
+      const msg = new SpeechSynthesisUtterance(
+        "Grand rising! I’m Nova. I’ll guide you through discovering your purpose."
+      );
+      window.speechSynthesis.speak(msg);
+    });
+  </script>
+
   <!-- Vercel Analytics -->
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
