@@ -1,0 +1,8 @@
+/* Print-friendly (light) */
+@media print{
+  body{background:#fff; color:#111}
+  .screen{display:block !important}
+  .screen-header .actions{display:none}
+  .card{background:#fff; border:1px solid #ddd}
+  #chosen-list li{background:#fff; border:1px solid #ddd}
+}
