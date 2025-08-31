@@ -1,1 +1,1 @@
-Delete this file with your actual audio named 'intro.mp3'. Keep the same filename and location.
+Place your real audio file here named 'intro.mp3'. It must be in this 'assets' folder.
